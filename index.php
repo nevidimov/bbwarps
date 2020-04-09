@@ -333,7 +333,7 @@
                 }else{
                     $output=$template;
                 }
-                $output=str_replace("<!-- REPLIES -->", (int) $replies_num,$output);
+                $output=str_replace("<!-- REPLIES -->", (int) $replies_num-1,$output);
                 $output=str_replace("<!-- ID -->", $current[0], $output);
                 $output=str_replace("<!-- NAME -->", $current[3], $output);
                 $output=str_replace("<!-- TEXT -->", $current[2], $output);
