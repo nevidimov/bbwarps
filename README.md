@@ -56,6 +56,10 @@
 
 Also you can rename "Index.php" to anything you want, it should still work
 
+## Admin panel
+
+Do it yourself. This way it will be more secure (because it is not standartized in any way), and you will have features YOU need.
+
 ## Lazy setup
 Just download the repository, it should work
 You need to restrict access to database/posts.csv if you value privacy of your users
