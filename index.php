@@ -137,6 +137,9 @@
         die();
     }
     function generateCaptcha(){
+        if (checkPro()){
+            return file_get_contents(TEMPLATE_HTML."/pro.html");
+        }
         if ($_SESSION["captchaError"]>CAPTCHA_ERROR){
             ob_end_clean();
             echo file_get_contents(ERROR_HTML."/captcha-bot.html");
@@ -157,6 +160,9 @@
         
     }
     function checkCaptcha(){
+        if (checkPro()){
+            return TRUE;
+        }
         if ($_SESSION["captchaError"]>CAPTCHA_ERROR){
             ob_end_clean();
             echo file_get_contents(ERROR_HTML."/captcha-bot.html");
