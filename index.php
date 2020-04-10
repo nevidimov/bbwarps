@@ -24,7 +24,7 @@
     const POST_QUANTITY_KEY = "!!CHANEME!!";
     const LAST_POST_KEY = "!!CHANGEME!!";
     const USER_SALT = "!!CHANGEME!!";
-    const ENC_COOKIES = TRUE;
+    const ENC_COOKIES = FALSE;
     const USER_CIPHER = "AES-128-CBC";
     const USER_COOKIE_EXPIRE = 3600*24*30;
     const HTTPS_COOKIE = FALSE;
@@ -51,6 +51,9 @@
     //config - text posting
     const MAX_TEXT_LENGTH = 5000;
     const MAX_TEXT_ENDL = 15;
+    //config - bans
+    const IP_BAN_REDIRECT = "https://www.google.com/search?q=gay+porn";
+    const FVISIT_BAN_REDIRECT = "https://www.google.com/search?q=how+to+become+homosexual";
     
     //General-purpose functions
     function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strokecolor, $fontfile, $text, $px) {
@@ -68,6 +71,48 @@
     function getIP(){
         $ip=$_SERVER['REMOTE_ADDR'];
         return openssl_encrypt($ip, IP_CIPHER, IP_ENC_KEY);
+    }
+    function getRawIP(){
+        $ip=$_SERVER['REMOTE_ADDR'];
+        return $ip;
+    }
+    function ipCIDR ($IP, $CIDR) {
+        list ($net, $mask) = explode ("/", $CIDR);
+        $ip_net = ip2long ($net);
+        $ip_mask = ~((1 << (32 - $mask)) - 1);
+        $ip_ip = ip2long ($IP);
+        $ip_ip_net = $ip_ip & $ip_mask;
+        return ($ip_ip_net == $ip_net);
+    }
+    //ban
+    function checkIPBan(){
+        $ip=getRawIP();
+        $file=openDatabase(DATABASE_PATH."/ip_ban.csv");
+        while ($current=fgets($file)){
+            $current=str_replace("\n", "", $current);
+            $current=str_replace("\r", "", $current);
+            if($current==$ip){
+                redirect(IP_BAN_REDIRECT);
+                die();
+            }
+            if(ipCIDR($ip, $current)){
+                redirect(IP_BAN_REDIRECT);
+                die();
+            }
+        }
+        fclose($file);
+    }
+    function checkFvisitBan(){
+        $file=openDatabase(DATABASE_PATH."/fvisit_ban.csv");
+        while ($current=fgets($file)){
+            $current=str_replace("\n", "", $current);
+            $current=str_replace("\r", "", $current);
+            if($current==$_SESSION["fvisit"]){
+                redirect(FVISIT_BAN_REDIRECT);
+                die();
+            }
+        }
+        fclose($file);
     }
     //captcha
     function drawCaptcha(){
@@ -647,7 +692,11 @@
             die;
         }
     }
+    //  MAIN 
+    
+    checkIPBan();
     getUserInfo();
+    checkFvisitBan();
     if (isset($_POST["postButton"])){
         checkCaptcha();
         posting();
