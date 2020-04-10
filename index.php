@@ -705,15 +705,14 @@
     echo str_replace("<!-- URL -->", $_SERVER["PHP_SELF"], file_get_contents(TEMPLATE_HTML."/header.html"));
     if (isset($_GET["thread"])){
         showForm(showThread($_GET["thread"]), generateCaptcha());
-        echo "<center>BBWARPS V0.1</center><hr>".file_get_contents(TEMPLATE_HTML."/footer.html");
-        die;
+        goto footer;
     }
     if (isset($_GET["stream"])){
         showStream();
-        echo "<center>BBWARPS V0.1</center><hr>".file_get_contents(TEMPLATE_HTML."/footer.html");
-        die();
+        goto footer;
     }
     showForm("T", generateCaptcha());
     showThreads();
-    echo "<center>BBWARPS V0.1</center><hr>".file_get_contents(TEMPLATE_HTML."/footer.html");
+    footer:
+    echo "<center>BBWARPS V0.2</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>
