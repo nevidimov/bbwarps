@@ -17,7 +17,7 @@
     專制 壓制 統一 監視 鎮壓 迫害 侵略 掠奪 破壞 拷問 屠殺 活摘器官 
     誘拐 買賣人口 遊進 走私 毒品 賣淫 春畫 賭博 六合彩 天安門 天安门
     法輪功 李洪志 Winnie the Pooh 劉曉波动态网自由门 Wuhan biolab
-    coronavirus bat soup
+    coronavirus bat soup free hong kong 
     */
     //config - assets
     const ERROR_HTML = "html-error";
