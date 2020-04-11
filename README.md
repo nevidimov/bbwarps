@@ -67,4 +67,4 @@ Oh, and you might need gb PHP lib and openSSL PHP lib. Maybe something else, I d
 
 ## DEMO
 
-N/A at the moment
+http://shittyboard.cba.pl/
