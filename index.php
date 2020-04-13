@@ -56,15 +56,15 @@
     const IMAGE_PATH = "images";
     //config posting
     const PRO_DELAY=10;
-    const NORM_DELAY=60;
-    const INIT_DELAY=120;
+    const NORM_DELAY=20;
+    const INIT_DELAY=30;
     const PRO_POST_QUANTITY=5;
     const PRO_AND=TRUE;
-    const PRO_TIME=1800;
+    const PRO_TIME=10;
     //config - image posting
     const IMG_POST_QUANTITY = 5; 
     const IMG_AND = TRUE;
-    const IMG_TIME = 3600;
+    const IMG_TIME = 10;
     const MAX_IMG_SIZE=4096*1024;
     const ALLOWED_EXT=array("jpg", "jpeg", "png", "gif", "pdf", "webp", "webm", "mp4");
     //config - text posting
@@ -403,6 +403,7 @@
                 }else{
                     $output=$template;
                 }
+                $output=str_replace("<!-- TOPIC -->", $current[7],$output);
                 $output=str_replace("<!-- REPLIES -->", (int) $replies_num-1,$output);
                 $output=str_replace("<!-- ID -->", $current[0], $output);
                 $output=str_replace("<!-- NAME -->", $current[3], $output);
@@ -462,6 +463,7 @@
                     }else{
                         $output=$template;
                     }
+                    
                     $output=str_replace("<!-- ID -->", $current[0], $output);
                     $output=str_replace("<!-- NAME -->", $current[3], $output);
                     $output=str_replace("<!-- TEXT -->", $current[2], $output);
@@ -491,6 +493,7 @@
                     }else{
                         $output=$OPtemplate;
                     }
+                    $output=str_replace("<!-- TOPIC -->", $current[7],$output);
                     $output=str_replace("<!-- REPLIES -->", (int) sizeof($replies)-1,$output);
                     $output=str_replace("<!-- ID -->", $current[0], $output);
                     $output=str_replace("<!-- NAME -->", $current[3], $output);
@@ -541,8 +544,12 @@
         }
         fclose($file);
     }
-    function showForm($thread, $captcha=""){
-        echo str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form.html")));
+    function showForm($thread, $captcha="", $topic=false){
+        if(!$topic){
+            echo str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form.html")));
+        }else{
+            echo str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form-thread.html")));
+        }   
     }
     //post handling
     function checkUpload(){
@@ -589,6 +596,13 @@
     function getName(){
         $txt=$_POST["postName"];
         if (strlen($txt)>128){
+            return FALSE;
+        }
+        return preg_replace("/[^A-Za-z0-9_ .:]/", '', $txt);
+    }
+    function getTopic(){
+        $txt=$_POST["postTopic"];
+        if (strlen($txt)>512){
             return FALSE;
         }
         return preg_replace("/[^A-Za-z0-9_ .:]/", '', $txt);
@@ -665,7 +679,7 @@
         }else{
             $threadFound=TRUE;
         }
-        putRow($temp, array($lastPost+1, $_POST["threadNumber"], $txt, $name, getIP(), time(), $_SESSION["fvisit"]));
+        putRow($temp, array($lastPost+1, $_POST["threadNumber"], $txt, $name, getIP(), time(), $_SESSION["fvisit"], getTopic()));
         rewind($db);
         $threads=array();
         $unlink=array();
@@ -730,7 +744,7 @@
         showStream();
         goto footer;
     }
-    showForm("T", generateCaptcha());
+    showForm("T", generateCaptcha(), TRUE);
     showThreads();
     footer:
     echo "<center>BBWARPS V0.2</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
