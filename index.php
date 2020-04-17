@@ -73,7 +73,9 @@
     //config - bans
     const IP_BAN_REDIRECT = "https://www.google.com/search?q=gay+porn";
     const FVISIT_BAN_REDIRECT = "https://www.google.com/search?q=how+to+become+homosexual";
-    
+    //Default strings
+    const ANONYMOUS_NAME = "Anonymous";
+
     //General-purpose functions
     function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strokecolor, $fontfile, $text, $px) {
         for($c1 = ($x-abs($px)); $c1 <= ($x+abs($px)); $c1++)
@@ -604,6 +606,9 @@
         $txt=$_POST["postTopic"];
         if (strlen($txt)>512){
             return FALSE;
+        }
+        if ($txt == ""){
+            return ANONYMOUS_NAME;
         }
         return preg_replace("/[^A-Za-z0-9_ .:]/", '', $txt);
     }
