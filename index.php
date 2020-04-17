@@ -272,6 +272,9 @@
         }
     }
     function newUser(){
+        if (file_get_contents(DATABASE_PATH."/newUser")!=1){
+            die("No new users are allowed. Contact at shittyboard (at) protonmail.com ");
+        }
         if ($_POST["cookieAccept"]=="YES"){
             $_SESSION["fvisit"]=time();
             $_SESSION["postq"]=0;
@@ -302,6 +305,9 @@
         setCookie("postq", $postq, $time+USER_COOKIE_EXPIRE, "", "", HTTPS_COOKIE, HTTP_ONLY_COOKIE);
         setCookie("lpost", $lpost, $time+USER_COOKIE_EXPIRE, "", "", HTTPS_COOKIE, HTTP_ONLY_COOKIE);
         setCookie("sign", hash("sha512",$fvisit.$lvisit.USER_SALT.$postq.ENC_COOKIES.$lpost), $time+USER_COOKIE_EXPIRE, "", "", HTTPS_COOKIE, HTTP_ONLY_COOKIE);
+        if (isset($_POST["postName"])){
+            setCookie("postName", getName(), $time+USER_COOKIE_EXPIRE, "", "", HTTPS_COOKIE, HTTP_ONLY_COOKIE);
+        }
     }
     function checkPro(){
         if(PRO_AND){
@@ -548,9 +554,9 @@
     }
     function showForm($thread, $captcha="", $topic=false){
         if(!$topic){
-            echo str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form.html")));
+            echo str_replace("<!-- NAME -->", $_COOKIE["postName"], str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form.html"))));
         }else{
-            echo str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form-thread.html")));
+            echo str_replace("<!-- NAME -->", $_COOKIE["postName"], str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form-thread.html"))));
         }   
     }
     //post handling
@@ -600,15 +606,15 @@
         if (strlen($txt)>128){
             return FALSE;
         }
+        if ($txt == ""){
+            return ANONYMOUS_NAME;
+        }
         return preg_replace("/[^A-Za-z0-9_ .:]/", '', $txt);
     }
     function getTopic(){
         $txt=$_POST["postTopic"];
         if (strlen($txt)>512){
             return FALSE;
-        }
-        if ($txt == ""){
-            return ANONYMOUS_NAME;
         }
         return preg_replace("/[^A-Za-z0-9_ .:]/", '', $txt);
     }
@@ -754,3 +760,4 @@
     footer:
     echo "<center>BBWARPS V0.2</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>
+
