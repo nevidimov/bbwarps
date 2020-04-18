@@ -53,12 +53,12 @@
     const MAX_TEXT_LENGTH = 5000; //Max post length
     const MAX_TEXT_ENDL = 15; // Max amount of breaklines per post
 ```
-
+It should be self-explanatory, I think. In case it is not, feel free to ask me via issues.  
 Also you can rename "Index.php" to anything you want, it should still work
 
 ## Admin panel
 
-Do it yourself. This way it will be more secure (because it is not standartized in any way), and you will have features YOU need.
+Do it yourself. This way it will be more secure (because it is not standartized in any way), and you will have features YOU need. Plus you will get an idea how this engine acutally works. 
 
 ## Lazy setup
 Just download the repository, it should work
