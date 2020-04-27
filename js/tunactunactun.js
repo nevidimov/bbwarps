@@ -45,21 +45,7 @@ function insert(text)
 	} 
 }
 
-if(localStorage.dark=="true"){
-        var links=document.getElementsByTagName("link");
-        var found=false;
-        for(var i=0;i<links.length;i++){
-            var rel=links[i].getAttribute("rel");
-            var title=links[i].getAttribute("title");
-            if(rel.indexOf("style")!=-1&&title){
-                links[i].disabled=true; // IE needs this to work. IE needs to die.
-                if("greg"==title) { links[i].disabled=false; found=true; }
-		}
-	}
-        
-}else{
-        
-}
+
 function toggleGlowInTheDark(){
     if(localStorage.dark=="true"){
         localStorage.dark="false";
