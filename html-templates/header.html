@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-<meta name="Description" content="BBWARPS">
+<meta name="Description" content="bbwarps ">
 <meta http-equiv="cache-control" content="max-age=0" />
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
@@ -29,11 +29,30 @@
 </style>
 <head>
 <link rel="stylesheet" type="text/css" href="assets/greg.css" title="greg" disabled>
-<title>BBWARPS</title>
+<title>bbwarps</title>
 </head>
-<body style="background-color: white;">
+<script>
+ 
+if(localStorage.dark=="true"){
+        var links=document.getElementsByTagName("link");
+        var found=false;
+        for(var i=0;i<links.length;i++){
+            var rel=links[i].getAttribute("rel");
+            var title=links[i].getAttribute("title");
+            if(rel.indexOf("style")!=-1&&title){
+                links[i].disabled=true; // IE needs this to work. IE needs to die.
+                if("greg"==title) { links[i].disabled=false; found=true; }
+		}
+	}
+        
+}else{
+        
+}
+</script>
+
+<body style="background-color: white; word-wrap: break-word;">
 <div style="text-align: center;" id="header">
     <a href="<!-- URL -->"><img src="assets/logo.jpg" style="max-width:95%;"></a><br>
-    <h1>BBWAPRS</h1>
+    <h1>bbwarps</h1>
     <hr>
 </div>
