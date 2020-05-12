@@ -73,5 +73,6 @@ NOTE: Board name and logo should be changed in HTML-templates.<br>
 <?php 
     if (isset($_POST["config"])){
     file_put_contents("cfg.php", $_POST["config"]);
+    unlink("install.php");
     }
 ?>
