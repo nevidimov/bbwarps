@@ -606,7 +606,6 @@
         return $txt;
     } 
     function getName(){
-        global $RandomName;
         $txt=$_POST["postName"];
         if (strlen($txt)>128){
             return FALSE;
