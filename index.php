@@ -1,5 +1,5 @@
 <?php
-    if ((include "cfg.php")!="TRUE"){
+    if ((include "cfg.php")!=TRUE){
         die ("Please run install.php first");
     }
     //General-purpose functions
