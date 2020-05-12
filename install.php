@@ -2,7 +2,7 @@
 <h1>BBWARPS install</h1></center>
 Welcome to BBWARPS install tool.<br><br>
 Dependencies: PHP-GD, OpenSSL.<br>
-JS Dependencies (optional): linkify, jquery. (for more information check out html-templates/header.html 
+JS Dependencies (optional): linkify, jquery. (for more information check out html-templates/header.html) 
 <br><br>
 Please configure following settings: <br>
 NOTE: Board name and logo should be changed in HTML-templates.<br>
