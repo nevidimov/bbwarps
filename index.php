@@ -75,7 +75,8 @@
     const FVISIT_BAN_REDIRECT = "https://www.google.com/search?q=how+to+become+homosexual";
     //Default strings
     const ANONYMOUS_NAME = "Anonymous";
-    
+    const USER_AGE_ERROR = "[hidden]";
+
     //General-purpose functions
     function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strokecolor, $fontfile, $text, $px) {
         for($c1 = ($x-abs($px)); $c1 <= ($x+abs($px)); $c1++)
@@ -414,6 +415,14 @@
                 $output=str_replace("<!-- TOPIC -->", $current[7],$output);
                 $output=str_replace("<!-- REPLIES -->", (int) $replies_num-1,$output);
                 $output=str_replace("<!-- ID -->", $current[0], $output);
+                if (strstr($current[3], "userage")){
+                    if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
+                        $current[3]=ANONYMOUS_NAME;
+                        if (time()-$days*3600*24<$_SESSION["fvisit"]){
+                            $current[2]=USER_AGE_ERROR;
+                        }
+                    }
+                }
                 $output=str_replace("<!-- NAME -->", $current[3], $output);
                 $output=str_replace("<!-- TEXT -->", $current[2], $output);
                 $output=str_replace("<!-- THREADURL -->", $_SERVER["PHP_SELF"]."?thread=".$current[0], $output);
@@ -501,6 +510,14 @@
                     }else{
                         $output=$OPtemplate;
                     }
+                    if (strstr($current[3], "userage")){
+                        if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
+                            $current[3]=ANONYMOUS_NAME;
+                                if (time()-$days*3600*24<$_SESSION["fvisit"]){
+                                    $current[2]=USER_AGE_ERROR;
+                            }
+                        }
+                    }
                     $output=str_replace("<!-- TOPIC -->", $current[7],$output);
                     $output=str_replace("<!-- REPLIES -->", (int) sizeof($replies)-1,$output);
                     $output=str_replace("<!-- ID -->", $current[0], $output);
@@ -542,6 +559,14 @@
                 }
             }else{
                 $current=$template;
+            }
+            if (strstr($current[3], "userage")){
+                    if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
+                        $current[3]=ANONYMOUS_NAME;
+                        if (time()-$days*3600*24<$_SESSION["fvisit"]){
+                            $current[2]=USER_AGE_ERROR;
+                        }
+                    }
             }
             $current=str_replace("<!-- REPLIES -->", "other",$current);
             $current=str_replace("<!-- ID -->", $data[0], $current);
@@ -758,5 +783,5 @@
     showForm("T", generateCaptcha(), TRUE);
     showThreads();
     footer:
-    echo "<center>BBWARPS V0.3</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
+    echo "<center>BBWARPS V0.4</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>
