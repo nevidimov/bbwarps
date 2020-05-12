@@ -1,25 +1,5 @@
 <?php
-    // AHEM, FVCK CH1NA, BOYCOTT CHINA GOODS, SUPPORT YOUR LOCAL MANUFACTURER
-    /*
-    动态网自由门 天安門 天安门 法輪功 李洪志 Free Tibet 六四天安門事件
-    The Tiananmen Square protests of 1989 天安門大屠殺 T
-    he Tiananmen Square Massacre 反右派鬥爭 The Anti-Rightist Struggle
-    大躍進政策 The Great Leap Forward 文化大革命 The Great Proletarian Cultural
-    Revolution 人權 Human Rights 民運 Democratization 自由 Freedom 獨立
-    Independence 多黨制 Multi-party system 台灣 臺灣 Taiwan Formosa
-    中華民國 Republic of China 西藏 土伯特 唐古特 Tibet 達賴喇嘛
-    Dalai Lama 法輪功 Falun Dafa 新疆維吾爾自治區 The Xinjiang
-    Uyghur Autonomous Region 諾貝爾和平獎 Nobel Peace Prize
-    劉暁波 Liu Xiaobo 民主 言論 思想 反共 反革命 抗議 運動 騷亂 
-    暴亂 騷擾 擾亂 抗暴 平反 維權 示威游行 李洪志 法輪大法 大法弟子 
-    強制斷種 強制堕胎 民族淨化 人體實驗 肅清 胡耀邦 趙紫陽 魏京生 王丹 
-    還政於民 和平演變 激流中國 北京之春 大紀元時報 九評論共産黨 獨裁 
-    專制 壓制 統一 監視 鎮壓 迫害 侵略 掠奪 破壞 拷問 屠殺 活摘器官 
-    誘拐 買賣人口 遊進 走私 毒品 賣淫 春畫 賭博 六合彩 天安門 天安门
-    法輪功 李洪志 Winnie the Pooh 劉曉波动态网自由门 Wuhan biolab
-    coronavirus bat soup free hong kong 
-    */
-    //config - assets
+    date_default_timezone_set('UTC');
     const ERROR_HTML = "html-error";
     const TEMPLATE_HTML = "html-templates";
     const ASSET_PATH="assets";
@@ -38,12 +18,12 @@
     const CAPTCHA_MIN_ANGLE = -8;
     const CAPTCHA_MAX_ANGLE = 8;
     //config - user information
-    const LAST_VISIT_KEY = "!!CHANGEME!!";
-    const FIRST_VISIT_KEY = "!!CHANGEME!!";
-    const POST_QUANTITY_KEY = "!!CHANEME!!";
-    const LAST_POST_KEY = "!!CHANGEME!!";
-    const USER_SALT = "!!CHANGEME!!";
-    const ENC_COOKIES = FALSE;
+    const LAST_VISIT_KEY = "!!CHANGE ME !!";
+    const FIRST_VISIT_KEY = "!!CHANGE ME !!";
+    const POST_QUANTITY_KEY = "!!CHANGE ME !!";
+    const LAST_POST_KEY = "!!CHANGE ME !!";
+    const USER_SALT = "!!CHANGE ME !!";
+    const ENC_COOKIES = TRUE;
     const USER_CIPHER = "AES-128-CBC";
     const USER_COOKIE_EXPIRE = 3600*24*30;
     const HTTPS_COOKIE = FALSE;
@@ -51,32 +31,32 @@
     //config - database
     const DATABASE_PATH = "database";
     const MAX_THREADS = 50;
-    const IP_ENC_KEY = "!!CHANGEME!!";
+    const IP_ENC_KEY = "!!CHANGE ME !!";
     const IP_CIPHER = "AES-128-CBC";
     const IMAGE_PATH = "images";
     //config posting
     const PRO_DELAY=10;
-    const NORM_DELAY=20;
-    const INIT_DELAY=30;
-    const PRO_POST_QUANTITY=5;
+    const NORM_DELAY=60;
+    const INIT_DELAY=90;
+    const PRO_POST_QUANTITY= 5;
     const PRO_AND=TRUE;
-    const PRO_TIME=10;
+    const PRO_TIME=600;
     //config - image posting
-    const IMG_POST_QUANTITY = 5; 
+    const IMG_POST_QUANTITY = 2; 
     const IMG_AND = TRUE;
-    const IMG_TIME = 10;
+    const IMG_TIME = 600;
     const MAX_IMG_SIZE=4096*1024;
     const ALLOWED_EXT=array("jpg", "jpeg", "png", "gif", "pdf", "webp", "webm", "mp4");
     //config - text posting
     const MAX_TEXT_LENGTH = 5000;
-    const MAX_TEXT_ENDL = 15;
+    const MAX_TEXT_ENDL = 30;
     //config - bans
-    const IP_BAN_REDIRECT = "https://www.google.com/search?q=gay+porn";
+    const IP_BAN_REDIRECT = "https://www.google.com/search?q=how+to+become+homosexual";
     const FVISIT_BAN_REDIRECT = "https://www.google.com/search?q=how+to+become+homosexual";
     //Default strings
     const ANONYMOUS_NAME = "Anonymous";
     const USER_AGE_ERROR = "[hidden]";
-
+    
     //General-purpose functions
     function imagettfstroketext(&$image, $size, $angle, $x, $y, &$textcolor, &$strokecolor, $fontfile, $text, $px) {
         for($c1 = ($x-abs($px)); $c1 <= ($x+abs($px)); $c1++)
@@ -274,7 +254,7 @@
     }
     function newUser(){
         if (file_get_contents(DATABASE_PATH."/newUser")!=1){
-            die("No new users are allowed. Contact at shittyboard (at) protonmail.com ");
+            die("No new users are allowed.");
         }
         if ($_POST["cookieAccept"]=="YES"){
             $_SESSION["fvisit"]=time();
@@ -480,7 +460,14 @@
                     }else{
                         $output=$template;
                     }
-                    
+                    if (strstr($current[3], "userage")){
+                    if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
+                        $current[3]=ANONYMOUS_NAME;
+                        if (time()-$days*3600*24<$_SESSION["fvisit"]){
+                            $current[2]=USER_AGE_ERROR;
+                        }
+                    }
+                    }
                     $output=str_replace("<!-- ID -->", $current[0], $output);
                     $output=str_replace("<!-- NAME -->", $current[3], $output);
                     $output=str_replace("<!-- TEXT -->", $current[2], $output);
@@ -509,14 +496,6 @@
                         }
                     }else{
                         $output=$OPtemplate;
-                    }
-                    if (strstr($current[3], "userage")){
-                        if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
-                            $current[3]=ANONYMOUS_NAME;
-                                if (time()-$days*3600*24<$_SESSION["fvisit"]){
-                                    $current[2]=USER_AGE_ERROR;
-                            }
-                        }
                     }
                     $output=str_replace("<!-- TOPIC -->", $current[7],$output);
                     $output=str_replace("<!-- REPLIES -->", (int) sizeof($replies)-1,$output);
@@ -560,14 +539,14 @@
             }else{
                 $current=$template;
             }
-            if (strstr($current[3], "userage")){
-                    if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
-                        $current[3]=ANONYMOUS_NAME;
+            if (strstr($data[3], "userage")){
+                    if($days=(int) filter_var($data[3], FILTER_SANITIZE_NUMBER_INT)){
+                        $data[3]=ANONYMOUS_NAME;
                         if (time()-$days*3600*24<$_SESSION["fvisit"]){
-                            $current[2]=USER_AGE_ERROR;
+                            $data[2]=USER_AGE_ERROR;
                         }
                     }
-            }
+                }
             $current=str_replace("<!-- REPLIES -->", "other",$current);
             $current=str_replace("<!-- ID -->", $data[0], $current);
             $current=str_replace("<!-- NAME -->", $data[3], $current);
@@ -625,8 +604,9 @@
         $txt=str_replace("\n", "<br>", $txt);
         $txt=str_replace("\r", "", $txt);
         return $txt;
-    }
+    } 
     function getName(){
+        global $RandomName;
         $txt=$_POST["postName"];
         if (strlen($txt)>128){
             return FALSE;
@@ -650,7 +630,7 @@
         }
         move_uploaded_file($_FILES["postFile"]["tmp_name"], IMAGE_PATH."/images/".$post.".".$ext);
         list($ogX, $ogY) = getimagesize(realpath(IMAGE_PATH."/images/".$post.".".$ext));
-        if ($ogX*$ogY>3500*3500){
+        if ($ogX*$ogY>2500*2500){
             return TRUE;
         }
         switch ($ext){
