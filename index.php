@@ -721,9 +721,5 @@
     showForm("T", generateCaptcha(), TRUE);
     showThreads();
     footer:
-    echo "<center>BBWARPS V0.4<br>Unique visitors (last hour)";
-    include "cv.php";
-    echo "<br> Unique visitors (daily)";
-    include "dv.php";
-    echo "</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
+    echo "<center>BBWARPS V0.4<br>Unique visitors (last hour)</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>
