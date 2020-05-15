@@ -198,7 +198,7 @@
         }
     }
     function newUser(){
-        if (file_get_contents(DATABASE_PATH."/newUser")!=1){
+        if (file_get_contents(DATABASE_PATH."/newUser")!="1"){
             die("No new users are allowed.");
         }
         if ($_POST["cookieAccept"]=="YES"){
@@ -413,6 +413,14 @@
                         }
                     }
                     }
+                    if (strstr($current[3], "userage")){
+                    if($days=(int) filter_var($current[3], FILTER_SANITIZE_NUMBER_INT)){
+                        $current[3]=ANONYMOUS_NAME;
+                        if (time()-$days*3600*24<$_SESSION["fvisit"]){
+                            $current[2]=USER_AGE_ERROR;
+                        }
+                    }
+                    }
                     $output=str_replace("<!-- ID -->", $current[0], $output);
                     $output=str_replace("<!-- NAME -->", $current[3], $output);
                     $output=str_replace("<!-- TEXT -->", $current[2], $output);
@@ -502,10 +510,16 @@
         fclose($file);
     }
     function showForm($thread, $captcha="", $topic=false){
-        if(!$topic){
-            echo str_replace("<!-- NAME -->", $_COOKIE["postName"], str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form.html"))));
+        if (!checkImagePosting()){
+            $noup=file_get_contents(TEMPLATE_HTML."/no-upload.html");
         }else{
-            echo str_replace("<!-- NAME -->", $_COOKIE["postName"], str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form-thread.html"))));
+            $noup="";
+        }
+        if(!$topic){
+            
+            echo str_replace("<!-- UPLOAD -->", $noup, str_replace("<!-- NAME -->", $_COOKIE["postName"], str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form.html")))));
+        }else{
+            echo str_replace("<!-- UPLOAD -->", $noup, str_replace("<!-- NAME -->", $_COOKIE["postName"], str_replace("<!-- CAPTCHA -->", $captcha, str_replace("<!-- THREAD -->", "$thread", file_get_contents(TEMPLATE_HTML."/form-thread.html")))));
         }   
     }
     //post handling
@@ -707,5 +721,9 @@
     showForm("T", generateCaptcha(), TRUE);
     showThreads();
     footer:
-    echo "<center>BBWARPS V0.4</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
+    echo "<center>BBWARPS V0.4<br>Unique visitors (last hour)";
+    include "cv.php";
+    echo "<br> Unique visitors (daily)";
+    include "dv.php";
+    echo "</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>
