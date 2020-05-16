@@ -691,7 +691,7 @@
             $_SESSION["lpost"]=time();
             $_SESSION["postq"]+=1;
             writeUserInfo();
-            redirect($_SERVER["PHP_SELF"]."?thread=".($lastPost+1));
+            redirect($_SERVER["PHP_SELF"]."?thread=".($lastPost+1)."#".($lastPost+1));
             die();
         }else{
             unlink (DATABASE_PATH."/temp".$tempRand.".csv");
