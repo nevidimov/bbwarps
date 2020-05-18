@@ -38,7 +38,16 @@ input {
     color: #de935f;
 }
 
-:target {
+.post:target {
+  border: 1px solid #c5c5c5;
+  background-color: #505050 !important;
+  padding-top: 3px;
+  padding-right: 3px;
+  padding-bottom: 3px;
+  padding-left: 3px;
+  color: #e5e5e5 !important;
+}
+.thread:target {
   border: 1px solid #c5c5c5;
   background-color: #505050 !important;
   padding-top: 3px;
