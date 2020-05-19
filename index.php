@@ -723,5 +723,5 @@
     showThreads();
     footer:
     echo file_get_contents(TEMPLATE_HTML."/nav-bottom.html");
-    echo "<center>BBWARPS V0.4<br>Unique visitors (last hour)</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
+    echo "<center>BBWARPS V0.4</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>
