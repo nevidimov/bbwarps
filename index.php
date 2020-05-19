@@ -555,7 +555,7 @@
             return FALSE;
         }
         $txt=htmlspecialchars($txt)."\n";
-        $txt=preg_replace('/(&gt;&gt;(\d+))/', '<a href="'.$_SERVER["PHP_SELF"].'?thread=\\2#\\2"><font color="blue" class="bluetext">\\1</font></a>' , strip_tags($txt)); 
+        $txt=preg_replace('/(&gt;&gt;(\d+))/', '<a href="?thread=\\2#\\2"><font color="blue" class="bluetext">\\1</font></a>' , strip_tags($txt)); 
         $txt=preg_replace('/^(&lt;&lt;(.*))\n/m', '<font color="#ee6b00" class="orangetext">\\1</font>' . "\n", $txt);
         $txt=preg_replace('/^(&gt;(.*))\n/m', '<font color="green" class="greentext">\\1</font>' . "\n", $txt);   
         $txt=preg_replace('/^(&lt;(.*))\n/m', '<font color="red" class="redtext">\\1</font>' . "\n", $txt);
@@ -710,6 +710,7 @@
     }
     writeUserInfo();
     echo str_replace("<!-- URL -->", $_SERVER["PHP_SELF"], file_get_contents(TEMPLATE_HTML."/header.html"));
+    echo file_get_contents(TEMPLATE_HTML."/nav-top.html");
     if (isset($_GET["thread"])){
         showForm(showThread($_GET["thread"]), generateCaptcha());
         goto footer;
@@ -721,5 +722,6 @@
     showForm("T", generateCaptcha(), TRUE);
     showThreads();
     footer:
+    echo file_get_contents(TEMPLATE_HTML."/nav-bottom.html");
     echo "<center>BBWARPS V0.4<br>Unique visitors (last hour)</center><hr>".str_replace("<!-- URL -->", $_SERVER["PHP_SELF"],file_get_contents(TEMPLATE_HTML."/footer.html"));
 ?>

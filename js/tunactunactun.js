@@ -55,8 +55,4 @@ function toggleGlowInTheDark(){
     location.reload();
 }
 
-function addToggle(){
-    var s = document.getElementById("footer").innerHTML;
-    document.getElementById("footer").innerHTML="<a href=\"javascript:toggleGlowInTheDark()\">[ black/white ] </a>"+s;
-}
 window.addEventListener('load', addToggle());
