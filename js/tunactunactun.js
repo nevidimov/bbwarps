@@ -54,5 +54,3 @@ function toggleGlowInTheDark(){
     }
     location.reload();
 }
-
-window.addEventListener('load', addToggle());
